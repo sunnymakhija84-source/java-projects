@@ -1,0 +1,11 @@
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/config/OpenSearchConfig.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/constants/PlatformConstants.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/dto/ApiResponse.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/dto/ErrorDetails.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/dto/PagedResponse.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/exception/AIPlatformException.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/exception/GlobalExceptionHandler.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/exception/ResourceNotFoundException.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/exception/ValidationException.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/util/PlatformUtils.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/common-lib/src/main/java/com/sunny/ai/common/vector/VectorSearchClient.java

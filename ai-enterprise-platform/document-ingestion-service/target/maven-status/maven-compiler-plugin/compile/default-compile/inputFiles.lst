@@ -1,0 +1,12 @@
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/DocumentIngestionApplication.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/controller/DocumentController.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/domain/ChunkStatus.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/domain/Document.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/domain/DocumentChunk.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/domain/DocumentStatus.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/dto/DocumentIngestionRequest.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/dto/DocumentResponse.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/event/DocumentIngestionEvent.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/repository/DocumentChunkRepository.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/repository/DocumentRepository.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/document-ingestion-service/src/main/java/com/sunny/ai/ingestion/service/DocumentIngestionService.java

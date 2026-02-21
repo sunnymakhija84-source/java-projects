@@ -1,0 +1,7 @@
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/EmbeddingServiceApplication.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/controller/EmbeddingController.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/domain/Embedding.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/listener/DocumentIngestionEventListener.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/repository/EmbeddingRepository.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/service/EmbeddingGeneratorService.java
+/Users/s.makhija/Desktop/iid/learning/repos/java-projects/ai-enterprise-platform/embedding-service/src/main/java/com/sunny/ai/embedding/service/OpenSearchVectorSearchClient.java

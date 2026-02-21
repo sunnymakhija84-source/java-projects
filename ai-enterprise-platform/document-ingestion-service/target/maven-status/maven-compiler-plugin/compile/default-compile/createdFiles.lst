@@ -1,0 +1,16 @@
+com/sunny/ai/ingestion/controller/DocumentController.class
+com/sunny/ai/ingestion/repository/DocumentRepository.class
+com/sunny/ai/ingestion/dto/DocumentResponse$DocumentResponseBuilder.class
+com/sunny/ai/ingestion/DocumentIngestionApplication.class
+com/sunny/ai/ingestion/event/DocumentIngestionEvent$DocumentIngestionEventBuilder.class
+com/sunny/ai/ingestion/domain/Document.class
+com/sunny/ai/ingestion/domain/DocumentChunk$DocumentChunkBuilder.class
+com/sunny/ai/ingestion/event/DocumentIngestionEvent.class
+com/sunny/ai/ingestion/repository/DocumentChunkRepository.class
+com/sunny/ai/ingestion/domain/DocumentChunk.class
+com/sunny/ai/ingestion/service/DocumentIngestionService.class
+com/sunny/ai/ingestion/domain/DocumentStatus.class
+com/sunny/ai/ingestion/domain/ChunkStatus.class
+com/sunny/ai/ingestion/dto/DocumentResponse.class
+com/sunny/ai/ingestion/domain/Document$DocumentBuilder.class
+com/sunny/ai/ingestion/dto/DocumentIngestionRequest.class

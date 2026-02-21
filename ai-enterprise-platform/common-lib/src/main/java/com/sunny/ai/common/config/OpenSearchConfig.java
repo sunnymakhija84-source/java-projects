@@ -1,0 +1,20 @@
+package com.sunny.ai.common.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.opensearch.client.RestClient;
+import org.opensearch.client.RestHighLevelClient;
+import org.opensearch.client.transport.TransportClient;
+import org.opensearch.common.settings.Settings;
+import org.opensearch.transport.client.PreBuiltTransportClient;
+
+@Configuration
+public class OpenSearchConfig {
+
+    @Bean
+    public RestHighLevelClient openSearchClient() {
+        return new RestHighLevelClient(
+                RestClient.builder(
+                        new HttpHost("localhost", 9200, "http")));
+    }
+}
