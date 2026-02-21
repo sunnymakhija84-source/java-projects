@@ -1,0 +1,133 @@
+version: "3.9"
+
+# Local development infra for the AI Enterprise Platform
+# Services:
+# - OpenSearch (single-node, security disabled)
+# - Kafka (single-node KRaft)
+# - Optional UIs: OpenSearch Dashboards, Kafka UI
+#
+# Usage:
+#   cd infra
+#   docker compose up -d
+#
+# Verify:
+#   curl http://localhost:9200
+#   Open http://localhost:5601 (Dashboards) and http://localhost:8085 (Kafka UI)
+
+name: ai-enterprise-platform
+
+services:
+  opensearch:
+    image: opensearchproject/opensearch:2.11.1
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=admin
+      - DISABLE_SECURITY_PLUGIN=true
+      - plugins.security.disabled=true
+      - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - "9200:9200"   # REST API
+      - "9600:9600"   # Performance Analyzer
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200 >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - ai-net
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:2.11.1
+    container_name: opensearch-dashboards
+    environment:
+      - OPENSEARCH_HOSTS=["http://opensearch:9200"]
+    ports:
+      - "5601:5601"
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    networks:
+      - ai-net
+
+  kafka:
+    image: bitnami/kafka:3.6
+    container_name: kafka
+    environment:
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_ENABLE_KRAFT=yes
+    ports:
+      - "9092:9092"     # inside-docker access
+      - "29092:29092"   # host access
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - ai-net
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    ports:
+      - "8085:8080"
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - ai-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=ai
+      - POSTGRES_PASSWORD=ai_password
+      - POSTGRES_DB=ai_platform
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ai -d ai_platform"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - ai-net
+
+# Note about running application services
+# --------------------------------------
+# The application modules (api-gateway, query-service, embedding-service,
+# document-ingestion-service, ai-governance-service) currently connect to
+# OpenSearch using localhost:9200 in code. To avoid changing app code, run the
+# services on the host (via `mvn spring-boot:run`) so they can reach
+# OpenSearch and Kafka via the published host ports (9200 for OpenSearch,
+# 29092 for Kafka). See README.md in this folder for details.
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  ai-net:
+    driver: bridge
