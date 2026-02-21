@@ -1,0 +1,26 @@
+# Maven build output
+/target/
+
+# Maven Wrapper JAR (keep if present)
+!/.mvn/wrapper/maven-wrapper.jar
+
+# IDEs and project files
+/.idea/
+*.iml
+*.ipr
+*.iws
+/.project
+/.classpath
+/.settings/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Common build/output dirs
+/out/
+/bin/
+/build/
