@@ -1,0 +1,8 @@
+com/sunny/ai/embedding/listener/DocumentIngestionEventListener.class
+com/sunny/ai/embedding/domain/Embedding$EmbeddingBuilder.class
+com/sunny/ai/embedding/controller/EmbeddingController.class
+com/sunny/ai/embedding/EmbeddingServiceApplication.class
+com/sunny/ai/embedding/service/OpenSearchVectorSearchClient.class
+com/sunny/ai/embedding/domain/Embedding.class
+com/sunny/ai/embedding/service/EmbeddingGeneratorService.class
+com/sunny/ai/embedding/repository/EmbeddingRepository.class

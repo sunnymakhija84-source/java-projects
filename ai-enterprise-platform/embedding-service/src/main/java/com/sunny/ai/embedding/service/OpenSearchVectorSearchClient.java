@@ -2,6 +2,11 @@ package com.sunny.ai.embedding.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.opensearch.action.index.IndexRequest;
+import org.opensearch.action.search.SearchRequest;
+import org.opensearch.action.search.SearchResponse;
+import org.opensearch.index.query.QueryBuilders;
+import org.opensearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.HashMap;
@@ -9,15 +14,9 @@ import java.util.List;
 import java.util.Arrays;
 import java.io.IOException;
 import com.sunny.ai.common.vector.VectorSearchClient;
-import com.sunny.ai.common.config.OpenSearchConfig;
 import org.opensearch.client.RestHighLevelClient;
 import org.opensearch.client.RequestOptions;
-import org.opensearch.client.RestClient;
-import org.opensearch.client.RestClientBuilder;
-import org.opensearch.client.RestHighLevelClient;
-import org.opensearch.client.transport.TransportClient;
-import org.opensearch.common.settings.Settings;
-import org.opensearch.transport.client.PreBuiltTransportClient;
+
 
 @Service
 @RequiredArgsConstructor

@@ -27,12 +27,12 @@ public class PlatformEventListener {
     )
     public void handleQueryExecuted(String message) {
         try {
-            Map<?, ?> event = objectMapper.readValue(message, Map.class);
+            Map<Object, ?> event = objectMapper.readValue(message, Map.class);
             governanceService.recordAuditEvent(
                     "QUERY_EXECUTED",
                     "query-service",
-                    (String) event.getOrDefault("userId", "unknown"),
-                    (String) event.getOrDefault("queryId", ""),
+                    (String) event.get("userId"),
+                    (String) event.get("queryId"),
                     message,
                     RiskLevel.LOW,
                     false
@@ -54,7 +54,7 @@ public class PlatformEventListener {
                     "DOCUMENT_INGESTED",
                     "document-ingestion-service",
                     "system",
-                    (String) event.getOrDefault("documentId", ""),
+                    (String) event.get("documentId"),
                     message,
                     RiskLevel.LOW,
                     false
