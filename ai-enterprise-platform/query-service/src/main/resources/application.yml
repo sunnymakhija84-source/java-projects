@@ -5,9 +5,9 @@ spring:
   application:
     name: query-service
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/query_db}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASS:postgres}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ai_platform}
+    username: ${DB_USER:ai}
+    password: ${DB_PASS:ai_password}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -21,7 +21,7 @@ spring:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
   kafka:
-    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:29092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
