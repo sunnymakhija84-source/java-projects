@@ -1,18 +1,28 @@
 package com.sunny.ai.common.config;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.apache.http.HttpHost;
 import org.opensearch.client.RestClient;
 import org.opensearch.client.RestHighLevelClient;
-import org.apache.http.HttpHost;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OpenSearchConfig {
 
+    @Value("${opensearch.host:${OPENSEARCH_HOST:localhost}}")
+    private String host;
+
+    @Value("${opensearch.port:${OPENSEARCH_PORT:9200}}")
+    private int port;
+
+    @Value("${opensearch.scheme:${OPENSEARCH_SCHEME:http}}")
+    private String scheme;
+
     @Bean
     public RestHighLevelClient openSearchClient() {
         return new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost("localhost", 9200, "http")));
+                RestClient.builder(new HttpHost(host, port, scheme))
+        );
     }
 }

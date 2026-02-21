@@ -5,10 +5,13 @@ version: "3.9"
 # - OpenSearch (single-node, security disabled)
 # - Kafka (single-node KRaft)
 # - Optional UIs: OpenSearch Dashboards, Kafka UI
+# - PostgreSQL 16
+# - Redis (for API Gateway and Query Service)
+# - Application services: api-gateway, document-ingestion-service, embedding-service, query-service, ai-governance-service
 #
 # Usage:
 #   cd infra
-#   docker compose up -d
+#   docker compose up -d --build
 #
 # Verify:
 #   curl http://localhost:9200
@@ -115,14 +118,154 @@ services:
     networks:
       - ai-net
 
-# Note about running application services
-# --------------------------------------
-# The application modules (api-gateway, query-service, embedding-service,
-# document-ingestion-service, ai-governance-service) currently connect to
-# OpenSearch using localhost:9200 in code. To avoid changing app code, run the
-# services on the host (via `mvn spring-boot:run`) so they can reach
-# OpenSearch and Kafka via the published host ports (9200 for OpenSearch,
-# 29092 for Kafka). See README.md in this folder for details.
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    networks:
+      - ai-net
+
+  # Application services
+  api-gateway:
+    build:
+      context: ../api-gateway
+      dockerfile: Dockerfile
+    image: ai-platform/api-gateway:local
+    container_name: api-gateway
+    environment:
+      - KAFKA_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - OPENSEARCH_HOST=opensearch
+      - OPENSEARCH_PORT=9200
+      - SPRING_APPLICATION_JSON={"eureka":{"client":{"enabled":false}}}
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    networks:
+      - ai-net
+
+  document-ingestion-service:
+    build:
+      context: ../document-ingestion-service
+      dockerfile: Dockerfile
+    image: ai-platform/document-ingestion-service:local
+    container_name: document-ingestion-service
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/ai_platform
+      - DB_USER=ai
+      - DB_PASS=ai_password
+      - KAFKA_SERVERS=kafka:9092
+      - OPENSEARCH_HOST=opensearch
+      - OPENSEARCH_PORT=9200
+      - SPRING_APPLICATION_JSON={"eureka":{"client":{"enabled":false}}}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    networks:
+      - ai-net
+
+  embedding-service:
+    build:
+      context: ../embedding-service
+      dockerfile: Dockerfile
+    image: ai-platform/embedding-service:local
+    container_name: embedding-service
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/ai_platform
+      - DB_USER=ai
+      - DB_PASS=ai_password
+      - KAFKA_SERVERS=kafka:9092
+      - OPENSEARCH_HOST=opensearch
+      - OPENSEARCH_PORT=9200
+      - AI_BASE_URL=http://localhost:11434
+      - SPRING_APPLICATION_JSON={"eureka":{"client":{"enabled":false}}}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    networks:
+      - ai-net
+
+  query-service:
+    build:
+      context: ../query-service
+      dockerfile: Dockerfile
+    image: ai-platform/query-service:local
+    container_name: query-service
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/ai_platform
+      - DB_USER=ai
+      - DB_PASS=ai_password
+      - KAFKA_SERVERS=kafka:9092
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - OPENSEARCH_HOST=opensearch
+      - OPENSEARCH_PORT=9200
+      - EMBEDDING_SERVICE_URL=http://embedding-service:8082
+      - SPRING_APPLICATION_JSON={"eureka":{"client":{"enabled":false}}}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      embedding-service:
+        condition: service_started
+    ports:
+      - "8083:8083"
+    networks:
+      - ai-net
+
+  ai-governance-service:
+    build:
+      context: ../ai-governance-service
+      dockerfile: Dockerfile
+    image: ai-platform/ai-governance-service:local
+    container_name: ai-governance-service
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/ai_platform
+      - DB_USER=ai
+      - DB_PASS=ai_password
+      - KAFKA_SERVERS=kafka:9092
+      - OPENSEARCH_HOST=opensearch
+      - OPENSEARCH_PORT=9200
+      - SPRING_APPLICATION_JSON={"eureka":{"client":{"enabled":false}}}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    ports:
+      - "8084:8084"
+    networks:
+      - ai-net
 
 volumes:
   pgdata:
