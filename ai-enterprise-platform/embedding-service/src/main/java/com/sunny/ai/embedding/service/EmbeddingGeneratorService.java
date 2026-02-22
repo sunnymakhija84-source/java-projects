@@ -1,5 +1,6 @@
 package com.sunny.ai.embedding.service;
 
+import com.sunny.ai.common.vector.VectorSearchClient;
 import com.sunny.ai.embedding.domain.Embedding;
 import com.sunny.ai.embedding.repository.EmbeddingRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class EmbeddingGeneratorService {
 
     private final EmbeddingRepository embeddingRepository;
     private final WebClient.Builder webClientBuilder;
+    private final VectorSearchClient vectorSearchClient;
 
     @Value("${ai.embedding.api-key:mock}")
     private String apiKey;
@@ -49,6 +51,14 @@ public class EmbeddingGeneratorService {
                 .dimensions(DEFAULT_DIMENSIONS)
                 .build();
 
+        // Store into OpenSearch via VectorSearchClient (replacement of legacy storage path)
+        try {
+            vectorSearchClient.store(documentId, chunkId, chunkContent, vector);
+        } catch (Exception e) {
+            log.error("Failed to store embedding in vector DB: {}", e.getMessage(), e);
+        }
+
+        // Continue persisting to relational DB for backward compatibility
         return embeddingRepository.save(embedding);
     }
 
