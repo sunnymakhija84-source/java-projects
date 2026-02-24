@@ -1,4 +1,4 @@
-Infra module for local development
+Infra module for local development for ai
 
 This module provides a ready-to-run local infrastructure using Docker Compose with:
 - OpenSearch (single-node, security disabled)
